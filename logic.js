@@ -1,24 +1,26 @@
 var maxBrightness = 10; // Minimum brightness to trip sensor
 var youveGotMail = false; 
 var checkFrequencyms = 1000;
-var led[]; 
-var lightSensor[];
+var led = []; 
+var lightSensor = [];
 var groveSensor = require('jsupm_grove');
 var doorSensor;
 
-function setup()
+(function setup()
 {
 	console.log("setup() has been called.");
 
 	led[0] = new groveSensor.GroveLed(2);
 	lightSensor[0] = new groveSensor.GroveLight(0);
-	button = new groveSensor.GroveButton(0);
+	doorSensor = new groveSensor.GroveButton(3);
 
 	setInterval(loop, checkFrequencyms);
-}
+})();
 
 function loop()
 {
+	console.log(doorSensor.value());
+	return;
 	console.log("loop() has been called.");
 
 	if (readDoorClosed())
@@ -65,7 +67,7 @@ function lightsOn()
 {
 	console.log("lightsOn() has been called.");
 
-	for i in led
+	for (i in led)
 		led[i].on();   
 
 	// https://software.intel.com/en-us/iot/hardware/sensors/grove-led        
@@ -75,7 +77,7 @@ function lightsOff()
 {
 	console.log("lightsOff() has been called.");
 
-	for i in led
+	for (i in led)
 		led[i].off();
 
 	// https://software.intel.com/en-us/iot/hardware/sensors/grove-led
@@ -85,13 +87,13 @@ function readLightSensor()
 {
 	// Returns the lowest value of all the light sensors
 	var lowest = 0; 
-	for i in lightSensor
+	for (i in lightSensor)
 	{
-		if (lightSensor[i].value < lightSensor[lowest].value)
+		if (lightSensor[i].value() < lightSensor[lowest].value())
 			lowest = i;
 	}
 
-	var x = lightSensor[lowest].value = 10;
+	var x = lightSensor[lowest].value();
 	console.log("readLightSensor() returned "+x+".");
 	return x;
 
@@ -102,7 +104,7 @@ function readDoorClosed()
 {
 	// To-Do
 	var x = doorSensor.value;
-	console.log("readDoorClosed() artifically returned "+x+".");
+	console.log("readDoorClosed() returned "+x+".");
 	return x;
 
 	// https://software.intel.com/en-us/iot/hardware/sensors/grove-button
