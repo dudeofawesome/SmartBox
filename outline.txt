@@ -1,11 +1,39 @@
+var shouldCheck = true;
 loop()
 {
-	wait 1
+
+	if (shouldCheck)
+		checkMail();
+	else
+
+
+	if mail = true || time > 12 hours
+
+
+
+
+
+
+	check for mail
+		if mail; notification; supress unil change state;
+
+	if no mail; start checking for mail again
+
+}
+
+var maxBrightness = max; // Minimum brightness to trip sensor
+checkMail()
+{
+	wait 1 // setTimeout(1);
 	
-	lights on
-	x = read light sensor
-	lights off
+	lightsOn();
+	var lightValue = readLightSensor();
+	lightsOff();
 
-	if x < 10; send email
+	if (lightValue < maxBrightness)
+		youveGotMail = true;
+	elseif (lightValue >= maxBrightness)
+		youveGotMail = false;
 
+	shouldCheck=false;
 }
