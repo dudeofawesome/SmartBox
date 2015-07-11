@@ -1,0 +1,11 @@
+loop()
+{
+	wait 1
+	
+	lights on
+	x = read light sensor
+	lights off
+
+	if x < 10; send email
+
+}
