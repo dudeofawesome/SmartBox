@@ -4,27 +4,41 @@ var checkFrequencyms = 1000;
 var led = []; 
 var lightSensor = [];
 var groveSensor = require('jsupm_grove');
-var doorSensor;
+var doorSensor, flagSensor;
+
+var notifications = require('./modules/notifications');
+var api = require('./modules/api');
+
+var emails = ["Josh@Gibbs.tk","vsriram@ucdavis.edu","b1hiker@gmail.com","louis@orleans.io"];
 
 (function setup()
 {
 	console.log("setup() has been called.");
 
-	led[0] = new groveSensor.GroveLed(2);
-	lightSensor[0] = new groveSensor.GroveLight(0);
-	doorSensor = new groveSensor.GroveButton(3);
+	led[0] = new groveSensor.GroveLed(2); // Plug into pin D2 (front of mailbox)
+	led[0] = new groveSensor.GroveLed(3); // Plug into pin D3 
+	led[0] = new groveSensor.GroveLed(4); // Plug into pin D4 
+	lightSensor[0] = new groveSensor.GroveLight(0); // Plug into pin A0 (front of mailbox)
+	lightSensor[0] = new groveSensor.GroveLight(1); // Plug into pin A1
+	lightSensor[0] = new groveSensor.GroveLight(2); // Plug into pin A2
+	doorSensor = new groveSensor.GroveButton(6); // Plug into pin D3
+	flagSensor = new groveSensor.GroveButton(7); // Plug into pin D3
 
 	setInterval(loop, checkFrequencyms);
+
+	api.startServer();
 })();
 
 function loop()
 {
-	console.log(doorSensor.value());
-	return;
 	console.log("loop() has been called.");
 
-	if (readDoorClosed())
+	// if the door is closed, check for mail
+	if (readDoorOpen())
+		lightsOn();
+	else
 	{
+		lightsOff();
 		checkMail();
 	}
 }
@@ -100,11 +114,11 @@ function readLightSensor()
 	// https://software.intel.com/en-us/iot/hardware/sensors/grove-light-sensor
 }
 
-function readDoorClosed()
+function readDoorOpen()
 {
 	// To-Do
-	var x = doorSensor.value;
-	console.log("readDoorClosed() returned "+x+".");
+	var x = doorSensor.value();
+	console.log("readDoorOpen() returned "+x+".");
 	return x;
 
 	// https://software.intel.com/en-us/iot/hardware/sensors/grove-button
@@ -116,6 +130,11 @@ function readDoorClosed()
 
 function sendNotification()
 {
-	// To-Do
 	console.log("sendNotification() has been called.\nYou've got mail!");
+	var date = new Date();
+	var subject = "Your mail on "+((date.getMonth())+1)+"/"+date.getDate()+"/"+date.getFullYear();
+	var body = "Your mail was delivered on on " + date;
+	for (i in emails)
+		notifications.sendEmail(emails[i],subject,body);
 }
+
