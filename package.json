@@ -7,7 +7,11 @@
     "url": "https://github.com/dudeofawesome/Smartbox"
   },
   "main": "logic.js",
-  "dependencies": {},
+  "dependencies": {
+    "body-parser": "^1.13.2",
+    "express": "^4.13.1",
+    "node-gcm": "^0.10.0"
+  },
   "devDependencies": {},
   "optionalDependencies": {},
   "engines": {

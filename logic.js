@@ -5,7 +5,10 @@ var led = [];
 var lightSensor = [];
 var groveSensor = require('jsupm_grove');
 var doorSensor;
+
 var notifications = require('./modules/notifications');
+var api = require('./modules/api');
+
 var emails = ["Josh@Gibbs.tk","vsriram@ucdavis.edu","b1hiker@gmail.com","louis@orleans.io"];
 
 (function setup()
@@ -17,6 +20,8 @@ var emails = ["Josh@Gibbs.tk","vsriram@ucdavis.edu","b1hiker@gmail.com","louis@o
 	doorSensor = new groveSensor.GroveButton(3);
 
 	setInterval(loop, checkFrequencyms);
+
+	api.startServer();
 })();
 
 function loop()
