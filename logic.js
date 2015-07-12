@@ -118,6 +118,10 @@ function readDoorOpen()
 function sendNotification()
 {
 	console.log("sendNotification() has been called.\nYou've got mail!");
+	var date = new Date();
+	var subject = "Your mail on "+((date.getMonth())+1)+"/"+date.getDate()+"/"+date.getFullYear();
+	var body = "Your mail was delivered on on " + date;
 	for (i in emails)
-		notifications.sendEmail(emails[i],"You've got mail!","Check me, bruh.");
+		notifications.sendEmail(emails[i],subject,body);
 }
+
