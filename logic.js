@@ -4,7 +4,7 @@ var checkFrequencyms = 1000;
 var led = []; 
 var lightSensor = [];
 var groveSensor = require('jsupm_grove');
-var doorSensor;
+var doorSensor, flagSensor;
 
 var notifications = require('./modules/notifications');
 var api = require('./modules/api');
@@ -15,9 +15,14 @@ var emails = ["Josh@Gibbs.tk","vsriram@ucdavis.edu","b1hiker@gmail.com","louis@o
 {
 	console.log("setup() has been called.");
 
-	led[0] = new groveSensor.GroveLed(2); // Plug into pin D2 
-	lightSensor[0] = new groveSensor.GroveLight(0); // Plug into pin A0
-	doorSensor = new groveSensor.GroveButton(3); // Plug into pin D3
+	led[0] = new groveSensor.GroveLed(2); // Plug into pin D2 (front of mailbox)
+	led[0] = new groveSensor.GroveLed(3); // Plug into pin D3 
+	led[0] = new groveSensor.GroveLed(4); // Plug into pin D4 
+	lightSensor[0] = new groveSensor.GroveLight(0); // Plug into pin A0 (front of mailbox)
+	lightSensor[0] = new groveSensor.GroveLight(1); // Plug into pin A1
+	lightSensor[0] = new groveSensor.GroveLight(2); // Plug into pin A2
+	doorSensor = new groveSensor.GroveButton(6); // Plug into pin D3
+	flagSensor = new groveSensor.GroveButton(7); // Plug into pin D3
 
 	setInterval(loop, checkFrequencyms);
 
@@ -29,8 +34,11 @@ function loop()
 	console.log("loop() has been called.");
 
 	// if the door is closed, check for mail
-	if (!readDoorOpen())
+	if (readDoorOpen())
+		lightsOn();
+	else
 	{
+		lightsOff();
 		checkMail();
 	}
 }
