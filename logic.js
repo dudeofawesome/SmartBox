@@ -15,9 +15,9 @@ var emails = ["Josh@Gibbs.tk","vsriram@ucdavis.edu","b1hiker@gmail.com","louis@o
 {
 	console.log("setup() has been called.");
 
-	led[0] = new groveSensor.GroveLed(2);
-	lightSensor[0] = new groveSensor.GroveLight(0);
-	doorSensor = new groveSensor.GroveButton(3);
+	led[0] = new groveSensor.GroveLed(2); // Plug into pin D2 
+	lightSensor[0] = new groveSensor.GroveLight(0); // Plug into pin A0
+	doorSensor = new groveSensor.GroveButton(3); // Plug into pin D3
 
 	setInterval(loop, checkFrequencyms);
 
