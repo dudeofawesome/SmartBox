@@ -6,24 +6,30 @@ var lightSensor = [];
 var groveSensor = require('jsupm_grove');
 var doorSensor;
 
+var notifications = require('./modules/notifications');
+var api = require('./modules/api');
+
+var emails = ["Josh@Gibbs.tk","vsriram@ucdavis.edu","b1hiker@gmail.com","louis@orleans.io"];
+
 (function setup()
 {
 	console.log("setup() has been called.");
 
-	led[0] = new groveSensor.GroveLed(2);
-	lightSensor[0] = new groveSensor.GroveLight(0);
-	doorSensor = new groveSensor.GroveButton(3);
+	led[0] = new groveSensor.GroveLed(2); // Plug into pin D2 
+	lightSensor[0] = new groveSensor.GroveLight(0); // Plug into pin A0
+	doorSensor = new groveSensor.GroveButton(3); // Plug into pin D3
 
 	setInterval(loop, checkFrequencyms);
+
+	api.startServer();
 })();
 
 function loop()
 {
-	console.log(doorSensor.value());
-	return;
 	console.log("loop() has been called.");
 
-	if (readDoorClosed())
+	// if the door is closed, check for mail
+	if (!readDoorOpen())
 	{
 		checkMail();
 	}
@@ -100,11 +106,11 @@ function readLightSensor()
 	// https://software.intel.com/en-us/iot/hardware/sensors/grove-light-sensor
 }
 
-function readDoorClosed()
+function readDoorOpen()
 {
 	// To-Do
-	var x = doorSensor.value;
-	console.log("readDoorClosed() returned "+x+".");
+	var x = doorSensor.value();
+	console.log("readDoorOpen() returned "+x+".");
 	return x;
 
 	// https://software.intel.com/en-us/iot/hardware/sensors/grove-button
@@ -116,6 +122,11 @@ function readDoorClosed()
 
 function sendNotification()
 {
-	// To-Do
 	console.log("sendNotification() has been called.\nYou've got mail!");
+	var date = new Date();
+	var subject = "Your mail on "+((date.getMonth())+1)+"/"+date.getDate()+"/"+date.getFullYear();
+	var body = "Your mail was delivered on on " + date;
+	for (i in emails)
+		notifications.sendEmail(emails[i],subject,body);
 }
+
