@@ -8,33 +8,49 @@
                 android:paddingBottom="@dimen/activity_vertical_margin"
                 tools:context=".MainActivity$PlaceholderFragment">
 
-    <RelativeLayout
-        android:layout_width="270dp"
-        android:layout_height="200dp"
-        android:layout_centerHorizontal="true"
-        android:layout_alignTop="@+id/mailStateImg"
-        android:layout_marginTop="-20dp"
-        android:background="#fafafaff">
 
-        <TextView
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="Large Text"
-            android:id="@+id/textView"
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:layout_width="300dp"
+            android:layout_height="300dp"
+            android:id="@+id/mailStateImg"
+            android:layout_centerVertical="true"
             android:layout_centerHorizontal="true"
-            android:background="#fafafaff"/>
+            android:src="@drawable/mail_open"
+            />
+
+        <RelativeLayout
+            android:layout_width="260dp"
+            android:layout_height="200dp"
+            android:layout_centerHorizontal="true"
+            android:layout_alignTop="@+id/mailStateImg"
+            android:layout_marginTop="30dp"
+            android:background="#fafafaff"
+            android:id="@+id/letter">
+
+            <TextView
+                android:layout_width="160dp"
+                android:layout_height="100dp"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="You&apos;ve got mail!"
+                android:id="@+id/letterText"
+                android:layout_centerHorizontal="true"
+                android:background="#fafafaff"
+                android:layout_marginTop="50dp"/>
+
+        </RelativeLayout>
+
+        <!--<ImageView-->
+            <!--android:layout_width="300dp"-->
+            <!--android:layout_height="300dp"-->
+            <!--android:id="@+id/imageView"-->
+            <!--android:layout_centerVertical="true"-->
+            <!--android:layout_centerHorizontal="true"-->
+            <!--android:src="@drawable/mail_open_top"/>-->
 
     </RelativeLayout>
-
-
-    <ImageView
-        android:layout_width="300dp"
-        android:layout_height="300dp"
-        android:id="@+id/mailStateImg"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true"
-        android:src="@drawable/mailopen"
-        />
 
 </RelativeLayout>
