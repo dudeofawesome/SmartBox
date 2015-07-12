@@ -21,10 +21,6 @@ module.exports = {
         return this;
     },
     startServer: function () {
-        app.use(express.static('./pages/'));
-        app.get('/', function (req, res) {
-            res.send(index);
-        });
         app.post('/config', function (req, res) {
             res.send('uhhhh');
         });
@@ -32,11 +28,11 @@ module.exports = {
             if (req.body.GCMid !== undefined) {
                 var saveData = function () {
                     var data = {};
-                    data.GCMid = req.body.GCMid
+                    data.GCMid = req.body.GCMid;
                     fs.writeFile('../data/store.json', JSON.stringify(data), function () {
 
                     });
-                }
+                };
 
                 if (fs.existsSync('../data/')) {
                     saveData();
@@ -50,14 +46,14 @@ module.exports = {
                 res.send('fail');
             }
         });
+        var istheremail = false;
+        app.get('/setmail', function (req, res) {
+            istheremail = !istheremail;
+            res.send(istheremail ? "there's mail" : "there's no mail");
+        });
         app.get('/getData', function (req, res) {
-            var data = {};
-            data.mail = true;
-            data.mailPosition = {front: true, middle: true, back: false};
-            data.flagUp = false;
-            data.doorOpen = false;
-            res.send(JSON.stringify(data));
-        })
+            res.send(JSON.stringify(module.exports.data));
+        });
 
         server = app.listen(WEBSITE_PORT, function () {
             console.log('API server listening on *:' + WEBSITE_PORT);
@@ -72,5 +68,11 @@ module.exports = {
     },
     getServer: function () {
         return server;
+    },
+    data: {
+        mail: false,
+        mailPosition: {front: true, middle: true, back: false},
+        flagUp: false,
+        doorOpen: false
     }
 };

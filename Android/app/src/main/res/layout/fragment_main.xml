@@ -19,7 +19,7 @@
             android:id="@+id/mailStateImg"
             android:layout_centerVertical="true"
             android:layout_centerHorizontal="true"
-            android:src="@drawable/mail_open"
+            android:src="@drawable/mail_closed"
             />
 
         <RelativeLayout
@@ -29,7 +29,8 @@
             android:layout_alignTop="@+id/mailStateImg"
             android:layout_marginTop="30dp"
             android:background="#fafafaff"
-            android:id="@+id/letter">
+            android:id="@+id/letter"
+            android:visibility="invisible">
 
             <TextView
                 android:layout_width="160dp"
@@ -42,6 +43,15 @@
                 android:layout_marginTop="50dp"/>
 
         </RelativeLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Door is closed"
+            android:id="@+id/txtDoorState"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"/>
 
         <!--<ImageView-->
             <!--android:layout_width="300dp"-->

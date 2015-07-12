@@ -28,6 +28,7 @@ import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
 import android.net.wifi.ScanResult;
+import android.os.Handler;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -60,6 +61,7 @@ public class MainActivity extends AppCompatActivity
 	ImageView envelope;
 	RelativeLayout letter;
 	TextView letterText;
+	TextView doorText;
 
 	@Override
 	protected void onCreate (Bundle savedInstanceState) {
@@ -79,22 +81,44 @@ public class MainActivity extends AppCompatActivity
 		webView = (WebView) findViewById(R.id.webView);
 		letter = (RelativeLayout) findViewById(R.id.letter);
 		letterText = (TextView) findViewById(R.id.letterText);
+		doorText = (TextView) findViewById(R.id.txtDoorState);
 		envelope = (ImageView) findViewById(R.id.mailStateImg);
 
 		checkIfSettingUpSmartbox();
 
 		updateFromMailbox();
+
+
+
+
+
+
+
+
+
+		final Handler mHandler = new Handler();
+		new Thread(new Runnable() {
+			@Override
+			public void run() {
+				// TODO Auto-generated method stub
+				while (true) {
+					try {
+						Thread.sleep(1000);
+						mHandler.post(new Runnable() {
+
+							@Override
+							public void run() {
+								// TODO Auto-generated method stub
+								updateFromMailbox();
+							}
+						});
+					} catch (Exception e) {
+						// TODO: handle exception
+					}
+				}
+			}
+		}).start();
 	}
-
-
-
-
-
-
-
-
-
-
 
 	private void updateFromMailbox () {
 		new DownloadWebpageTask().execute("getData");
@@ -122,9 +146,15 @@ public class MainActivity extends AppCompatActivity
 				if (data.getBoolean("mail")) {
 					envelope.setBackgroundResource(R.drawable.mail_open);
 					letter.setVisibility(View.VISIBLE);
+					letterText.setText("You've got mail!");
 				} else {
-					envelope.setBackgroundResource(R.drawable.mail_open);
+					envelope.setBackgroundResource(R.drawable.mail_closed);
 					letter.setVisibility(View.INVISIBLE);
+				}
+				if (data.getBoolean("doorOpen")) {
+					doorText.setText("Door is open!");
+				} else {
+					doorText.setText("Door is closed.");
 				}
 //				data.getJSONObject("mailPosition") = {front: true, middle:true, back: false};
 //				data.getBoolean("flagUp") = false;
@@ -173,7 +203,7 @@ public class MainActivity extends AppCompatActivity
 		int len = 500;
 
 		try {
-			URL url = new URL("http://joshs-edison.local:8080/" + myurl);
+			URL url = new URL("http://192.168.237.6:8080/" + myurl);
 			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 			conn.setReadTimeout(10000 /* milliseconds */);
 			conn.setConnectTimeout(15000 /* milliseconds */);
@@ -183,6 +213,9 @@ public class MainActivity extends AppCompatActivity
 			conn.connect();
 			int response = conn.getResponseCode();
 			System.out.println("The response is: " + response);
+			if (response == 501) {
+				letterText.setText("?");
+			}
 			is = conn.getInputStream();
 
 			// Convert the InputStream into a string
@@ -238,8 +271,6 @@ public class MainActivity extends AppCompatActivity
 							splitIP[3] = "1";
 							ip = splitIP[0] + "." + splitIP[1] + "." + splitIP[2] + "." + splitIP[3];
 							webView.loadUrl("http://" + ip + ":81");
-
-							System.out.println("IP4: " + ip);
 
 							break;
 						}
