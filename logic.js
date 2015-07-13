@@ -16,11 +16,11 @@ var emails = ["Josh@Gibbs.tk","vsriram@ucdavis.edu","b1hiker@gmail.com","louis@o
 	console.log("setup() has been called.");
 
 	led[0] = new groveSensor.GroveLed(2); // Plug into pin D2 (front of mailbox)
-	led[0] = new groveSensor.GroveLed(3); // Plug into pin D3 
-	led[0] = new groveSensor.GroveLed(4); // Plug into pin D4 
+	led[1] = new groveSensor.GroveLed(3); // Plug into pin D3 
+	led[2] = new groveSensor.GroveLed(4); // Plug into pin D4 
 	lightSensor[0] = new groveSensor.GroveLight(0); // Plug into pin A0 (front of mailbox)
-	lightSensor[0] = new groveSensor.GroveLight(1); // Plug into pin A1
-	lightSensor[0] = new groveSensor.GroveLight(2); // Plug into pin A2
+	lightSensor[1] = new groveSensor.GroveLight(1); // Plug into pin A1
+	lightSensor[2] = new groveSensor.GroveLight(2); // Plug into pin A2
 	doorSensor = new groveSensor.GroveButton(6); // Plug into pin D3
 	flagSensor = new groveSensor.GroveButton(7); // Plug into pin D3
 
@@ -81,8 +81,11 @@ function lightsOn()
 {
 	console.log("lightsOn() has been called.");
 
-	for (i in led)
-		led[i].on();   
+	//for (i in led)
+		led[0].on();   
+		led[1].on();   
+		led[2].on();   
+
 
 	// https://software.intel.com/en-us/iot/hardware/sensors/grove-led        
 }
@@ -92,7 +95,9 @@ function lightsOff()
 	console.log("lightsOff() has been called.");
 
 	for (i in led)
-		led[i].off();
+		led[0].off();
+		led[1].off();
+		led[2].off();
 
 	// https://software.intel.com/en-us/iot/hardware/sensors/grove-led
 }
@@ -101,7 +106,8 @@ function readLightSensor()
 {
 	// Returns the lowest value of all the light sensors
 	var lowest = 0; 
-	for (i in lightSensor)
+	for (i = 0; i < lightSensor.length; i++)
+	//for (i in lightSensor)
 	{
 		if (lightSensor[i].value() < lightSensor[lowest].value())
 			lowest = i;
